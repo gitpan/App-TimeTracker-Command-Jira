@@ -1,0 +1,9 @@
+Revision history for App-TimeTracker-Command-Jira
+
+0.2       2014-09-12 23:34:21+02:00 Europe/Vienna
+
+    - Fixed CPAN namespace
+
+0.1       2014-09-12 23:16:59+02:00 Europe/Vienna
+
+    - Initial release
