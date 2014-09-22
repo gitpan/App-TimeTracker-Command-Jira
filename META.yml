@@ -18,7 +18,7 @@ name: App-TimeTracker-Command-Jira
 provides:
   App::TimeTracker::Command::Jira:
     file: lib/App/TimeTracker/Command/Jira.pm
-    version: '0.2'
+    version: '0.3'
 requires:
   App::TimeTracker::Utils: '0'
   JIRA::REST: '0'
@@ -32,6 +32,6 @@ requires:
   warnings: '0'
 resources:
   bugtracker: https://github.com/pepl/app-timetracker-command-jira/issues
-  homepage: https://github.com/pepl/app-timetracker-jira
-  repository: https://github.com/pepl/app-timetracker-jira.git
-version: '0.2'
+  homepage: https://github.com/pepl/App-TimeTracker-Jira
+  repository: https://github.com/pepl/App-TimeTracker-Jira.git
+version: '0.3'

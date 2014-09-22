@@ -9,13 +9,16 @@ BEGIN {
 use strict;
 use warnings;
 
-# this test was generated with Dist::Zilla::Plugin::NoTabsTests 0.06
+# this test was generated with Dist::Zilla::Plugin::NoTabsTests 0.09
 
 use Test::More 0.88;
 use Test::NoTabs;
 
 my @files = (
-    'lib/App/TimeTracker/Command/Jira.pm'
+    'lib/App/TimeTracker/Command/Jira.pm',
+    't/00-load.t',
+    't/000-report-versions.t',
+    't/perlcriticrc'
 );
 
 notabs_ok($_) foreach @files;

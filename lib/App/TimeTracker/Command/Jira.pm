@@ -6,7 +6,7 @@ use 5.010;
 # ABSTRACT: App::TimeTracker Jira plugin
 use App::TimeTracker::Utils qw(error_message warning_message);
 
-our $VERSION = '1.000';
+our $VERSION = '0.3';
 
 use Moose::Role;
 use JIRA::REST ();
@@ -43,7 +43,7 @@ has 'jira_ticket_transitions' => (
 sub _build_jira_ticket {
     my ($self) = @_;
 
-    if ( my $ticket = $self->init_jira_ticket( $self->_current_task ) ) {
+    if ( my $ticket = $self->_init_jira_ticket( $self->_current_task ) ) {
         return $ticket;
     }
 }
@@ -152,7 +152,7 @@ after 'cmd_stop' => sub {
     my $task_rounded_minutes = $task->rounded_minutes;
     return unless $task_rounded_minutes > 0;
 
-    my $ticket = $self->init_jira_ticket($task);
+    my $ticket = $self->_init_jira_ticket($task);
     if ( not $ticket ) {
         say
             'Last task did not contain a JIRA ticket id, not updating TimeWorked or Status.';
@@ -194,6 +194,36 @@ after 'cmd_stop' => sub {
         }
     }
 };
+
+sub _init_jira_ticket {
+    my ( $self, $task ) = @_;
+    my $id;
+    if ($task) {
+        $id = $task->jira_id;
+    }
+    elsif ( $self->jira ) {
+        $id = $self->jira;
+    }
+
+    my $transitions;
+    try {
+        $transitions = $self->jira_client->GET(sprintf('/issue/%s/transitions',$id));
+    }
+    catch {
+        error_message( 'Could not fetch JIRA ticket transitions: %s', $transitions );
+    };
+    $self->jira_ticket_transitions( $transitions->{transitions} );
+
+    my $ticket;
+    try {
+        $ticket = $self->jira_client->GET(sprintf('/issue/%s',$id), { fields => '-comment' });
+    }
+    catch {
+        error_message( 'Could not fetch JIRA ticket: %s', $ticket );
+    };
+
+    return $ticket;
+}
 
 sub _check_resolve_ticket_transition {
     my ( $self, $status_name ) = @_;
@@ -247,7 +277,7 @@ App::TimeTracker::Command::Jira - App::TimeTracker Jira plugin
 
 =head1 VERSION
 
-version 0.2
+version 0.3
 
 =head1 DESCRIPTION
 

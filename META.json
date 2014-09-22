@@ -26,7 +26,8 @@
             "Test::More" : "0",
             "Test::NoTabs" : "0",
             "Test::Pod" : "1.41",
-            "Test::Pod::Coverage" : "1.08"
+            "Test::Pod::Coverage" : "1.08",
+            "Test::Synopsis" : "0"
          }
       },
       "runtime" : {
@@ -54,7 +55,7 @@
    "provides" : {
       "App::TimeTracker::Command::Jira" : {
          "file" : "lib/App/TimeTracker/Command/Jira.pm",
-         "version" : "0.2"
+         "version" : "0.3"
       }
    },
    "release_status" : "stable",
@@ -62,13 +63,13 @@
       "bugtracker" : {
          "web" : "https://github.com/pepl/app-timetracker-command-jira/issues"
       },
-      "homepage" : "https://github.com/pepl/app-timetracker-jira",
+      "homepage" : "https://github.com/pepl/App-TimeTracker-Jira",
       "repository" : {
          "type" : "git",
-         "url" : "https://github.com/pepl/app-timetracker-jira.git",
-         "web" : "https://github.com/pepl/app-timetracker-jira"
+         "url" : "https://github.com/pepl/App-TimeTracker-Jira.git",
+         "web" : "https://github.com/pepl/App-TimeTracker-Jira"
       }
    },
-   "version" : "0.2"
+   "version" : "0.3"
 }
 

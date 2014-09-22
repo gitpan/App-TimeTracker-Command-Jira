@@ -4,7 +4,7 @@ App::TimeTracker::Command::Jira - App::TimeTracker Jira plugin
 
 # VERSION
 
-version 0.2
+version 0.3
 
 # DESCRIPTION
 
