@@ -4,7 +4,7 @@ App::TimeTracker::Command::Jira - App::TimeTracker Jira plugin
 
 # VERSION
 
-version 0.3
+version 0.4
 
 # DESCRIPTION
 
@@ -38,10 +38,6 @@ Username to connect with.
 
 Password to connect with. Beware: stored in clear text!
 
-### set\_assignee\_to
-
-If set, unassigned tickets will be assigned to this user.
-
 ### log\_time\_spent
 
 If set, an entry will be created in the ticket's work log
@@ -63,21 +59,12 @@ If `--jira` is set to a valid ticket identifier:
 - set or append the ticket subject in the task description ("Adding more cruft")
 - add the ticket number to the tasks tags ("ABC-1")
 - if `Git` is also used, determine a save branch name from the ticket identifier and subject, and change into this branch ("ABC-1\_adding\_more\_cruft")
-- set the owner of the ticket in Jira (given `set_assignee_to` is set in config)
 - updates the status of the ticket in Jira (given `set_status/start/transition` is set in config)
 
 ## stop
 
 If <log\_time\_spent> is set in config, adds and entry to the worklog of the Jira ticket.
 If <set\_status/stop/transition> is set in config and the current Jira ticket state is <set\_status/start/target\_state>, updates the status of the ticket
-
-# CAVEATS
-
-Note that for the setting of assignees at workflow transitions like "Start Progress" to work,
-the workflow transition needs to have a (workflow) "Screen" assigned where the field "Assignee" is part of.
-Otherwise you will get a HTTP 400 response with an error like:
-
-    Field 'assignee' cannot be set. It is not on the appropriate screen, or unknown
 
 # EXAMPLE CONFIG
 
@@ -89,7 +76,6 @@ Otherwise you will get a HTTP 400 response with an error like:
         "jira" : {
             "username" : "dingo",
             "password" : "secret",
-            "set_assignee_to" : "dingo",
             "log_time_spent" : "1",
             "server_url" : "http://localhost:8080",
             "set_status": {

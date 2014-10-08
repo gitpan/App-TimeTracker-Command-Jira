@@ -4,7 +4,7 @@
       "Michael Kröll <pepl@cpan.org>"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Dist::Zilla version 5.020, CPAN::Meta::Converter version 2.142060",
+   "generated_by" : "Dist::Zilla version 5.020, CPAN::Meta::Converter version 2.142690",
    "license" : [
       "perl_5"
    ],
@@ -55,7 +55,7 @@
    "provides" : {
       "App::TimeTracker::Command::Jira" : {
          "file" : "lib/App/TimeTracker/Command/Jira.pm",
-         "version" : "0.3"
+         "version" : "0.4"
       }
    },
    "release_status" : "stable",
@@ -70,6 +70,6 @@
          "web" : "https://github.com/pepl/App-TimeTracker-Jira"
       }
    },
-   "version" : "0.3"
+   "version" : "0.4"
 }
 

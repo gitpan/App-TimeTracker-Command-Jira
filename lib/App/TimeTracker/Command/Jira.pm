@@ -6,7 +6,7 @@ use 5.010;
 # ABSTRACT: App::TimeTracker Jira plugin
 use App::TimeTracker::Utils qw(error_message warning_message);
 
-our $VERSION = '0.3';
+our $VERSION = '0.4';
 
 use Moose::Role;
 use JIRA::REST ();
@@ -105,18 +105,9 @@ after [ 'cmd_start', 'cmd_continue', 'cmd_append' ] => sub {
     my $ticket = $self->jira_ticket;
     return unless $ticket;
 
-    if ( $self->config->{jira}->{set_assignee_to} ) {
+    if ( $self->config->{jira}->{set_status}{start}->{transition}
+            and $self->config->{jira}->{set_status}{start}->{target_state} ) {
         my $ticket_update_data;
-
-        if ( defined $ticket->{fields}->{assignee}->{name}
-            and $ticket->{fields}->{assignee}->{name}
-            ne $self->config->{jira}->{set_assignee_to} ) {
-            warning_message(
-                'Will not steal tickets, please do that via Jira Web-UI');
-        }
-        else {
-            $ticket_update_data->{fields}->{assignee}->{name} = $self->config->{jira}->{set_assignee_to};
-        }
 
         my $status = $self->config->{jira}->{set_status}{start}->{target_state};
         if ( $status and $status ne $ticket->{fields}->{status}->{name} ) {
@@ -137,7 +128,7 @@ after [ 'cmd_start', 'cmd_continue', 'cmd_append' ] => sub {
                 );
             }
             catch {
-                error_message( 'Could not set JIRA ticket assignee/ticket status: "%s"', $_ );
+                error_message( 'Could not set JIRA ticket ticket status: "%s"', $_ );
             };
         }
     }
@@ -277,7 +268,7 @@ App::TimeTracker::Command::Jira - App::TimeTracker Jira plugin
 
 =head1 VERSION
 
-version 0.3
+version 0.4
 
 =head1 DESCRIPTION
 
@@ -311,10 +302,6 @@ Username to connect with.
 
 Password to connect with. Beware: stored in clear text!
 
-=head3 set_assignee_to
-
-If set, unassigned tickets will be assigned to this user.
-
 =head3 log_time_spent
 
 If set, an entry will be created in the ticket's work log
@@ -341,8 +328,6 @@ If C<--jira> is set to a valid ticket identifier:
 
 =item * if C<Git> is also used, determine a save branch name from the ticket identifier and subject, and change into this branch ("ABC-1_adding_more_cruft")
 
-=item * set the owner of the ticket in Jira (given C<set_assignee_to> is set in config)
-
 =item * updates the status of the ticket in Jira (given C<set_status/start/transition> is set in config)
 
 =back
@@ -351,14 +336,6 @@ If C<--jira> is set to a valid ticket identifier:
 
 If <log_time_spent> is set in config, adds and entry to the worklog of the Jira ticket.
 If <set_status/stop/transition> is set in config and the current Jira ticket state is <set_status/start/target_state>, updates the status of the ticket
-
-=head1 CAVEATS
-
-Note that for the setting of assignees at workflow transitions like "Start Progress" to work,
-the workflow transition needs to have a (workflow) "Screen" assigned where the field "Assignee" is part of.
-Otherwise you will get a HTTP 400 response with an error like:
-
-    Field 'assignee' cannot be set. It is not on the appropriate screen, or unknown
 
 =head1 EXAMPLE CONFIG
 
@@ -370,7 +347,6 @@ Otherwise you will get a HTTP 400 response with an error like:
         "jira" : {
             "username" : "dingo",
             "password" : "secret",
-            "set_assignee_to" : "dingo",
             "log_time_spent" : "1",
             "server_url" : "http://localhost:8080",
             "set_status": {
